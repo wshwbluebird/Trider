@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-	"Trider/turl"
+	"Trider/src/turl"
 )
 
 type ChanScheduler struct {

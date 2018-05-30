@@ -1,8 +1,8 @@
 package downloader
 
 import (
-	"Trider/turl"
-	"Trider/content"
+	"Trider/src/turl"
+	"Trider/src/content"
 )
 
 type Downloader interface {

@@ -1,11 +1,11 @@
 package processor
 
 import (
-	"Trider/content"
-	"Trider/turl"
+	"Trider/src/turl"
 	"math/rand"
 	"fmt"
 	"time"
+	"Trider/src/content"
 )
 
 type TestProcessor struct {
@@ -24,7 +24,7 @@ func (t *TestProcessor) numbers() int {
 	return t.js
 }
 
-func (t *TestProcessor) DoProcess(content *content.Content) ([]turl.Turl,error){
+func (t *TestProcessor) DoProcess(content *content.Content, oriUrl string) ([]turl.Turl,error){
 	urls := []turl.Turl{}
 	time.Sleep( time.Duration(2 * time.Second))
 	if rand.Intn(3) == 2 {

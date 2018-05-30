@@ -1,10 +1,10 @@
-package Trider
+package src
 
 import (
 	"testing"
-	"Trider/turl"
-	"Trider/downloader"
-	"Trider/processor"
+	"Trider/src/turl"
+	"Trider/src/downloader"
+	"Trider/src/processor"
 )
 
 func TestTrider_Run1(t *testing.T) {

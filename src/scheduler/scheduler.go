@@ -1,6 +1,6 @@
 package scheduler
 
-import "Trider/turl"
+import "Trider/src/turl"
 
 type Scheduler interface {
 	Push(turl *turl.Turl) error

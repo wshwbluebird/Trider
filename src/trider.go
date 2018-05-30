@@ -1,15 +1,15 @@
-package Trider
+package src
 
 import (
 
-	"Trider/chanmutex"
-	"Trider/scheduler"
-	"Trider/turl"
-	"Trider/processor"
-	"Trider/downloader"
+	"Trider/src/chanmutex"
+	"Trider/src/scheduler"
+	"Trider/src/turl"
+	"Trider/src/processor"
+	"Trider/src/downloader"
 	"fmt"
 	"time"
-	"Trider/tlog"
+	"Trider/src/tlog"
 )
 
 type Trider struct {
@@ -113,7 +113,7 @@ func (trider *Trider) Run(){
 			trider.tlog.LogRun(t.GetUrlString())
 
 			if trider.downloaders[url.GetDownloaderNameString()] == nil {
-				str := fmt.Sprintf("no downloader named %s",url.GetDownloaderNameString())
+				str := fmt.Sprintf("no processor named %s",url.GetDownloaderNameString())
 				trider.tlog.LogError(str)
 				trider.tlog.LogFail(url.GetUrlString())
 				return
@@ -137,7 +137,7 @@ func (trider *Trider) Run(){
 				return
 			}
 
-			newTurls, errp := processor.DoProcess(cnt)
+			newTurls, errp := processor.DoProcess(cnt,url.GetUrlString())
 			if errp != nil {
 				trider.tlog.LogError("fail in process")
 				trider.tlog.LogError(err.Error())
