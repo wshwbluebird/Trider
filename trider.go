@@ -9,6 +9,7 @@ import (
 	"Trider/downloader"
 	"fmt"
 	"time"
+	"Trider/tlog"
 )
 
 type Trider struct {
@@ -17,7 +18,8 @@ type Trider struct {
 	scheduler scheduler.Scheduler
 	processors map[string] processor.Processor
 	downloaders map[string] downloader.Downloader
-	seeds []turl.Turl
+	tlog *tlog.Tlog
+	seeds []*turl.Turl
 
 }
 
@@ -25,25 +27,63 @@ func NewTrider() *Trider {
 	processormap := make(map[string] processor.Processor)
 	downloadermap := make(map[string] downloader.Downloader)
 	downloadermap["default"] = downloader.NewDownloaderHtml()
+	logger := tlog.NewStdOut()
 	return &Trider{
 		threadNumber:0,
 		mutex:nil,
 		scheduler:nil,
 		processors:processormap,
 		downloaders:downloadermap,
+		seeds:nil,
+		tlog:logger,
+
 	}
 
 }
+
+
+func (trider *Trider) RegisterDownloader(downloader downloader.Downloader, name string) *Trider{
+	trider.downloaders[name] = downloader
+	return trider
+}
+
+
+func (trider *Trider) RegisterProcessor(processor processor.Processor, name string) *Trider{
+	trider.processors[name] = processor
+	return trider
+}
+
+func (trider *Trider) SetThreadNumber(number uint) *Trider  {
+	trider.threadNumber = number
+	return trider
+}
+
+func (trider *Trider) SetSeeds(turls []*turl.Turl) *Trider  {
+	trider.seeds = turls
+	return trider
+}
+
+
+func (trider *Trider) SetLogger(tlog *tlog.Tlog) *Trider  {
+	trider.tlog = tlog
+	return trider
+}
+
 
 func (trider *Trider) Run(){
 	if trider.threadNumber == 0 {
 		trider.threadNumber = 1
 	}
+
+
 	trider.mutex = chanmutex.NewResourceManageChan(trider.threadNumber)
 	trider.scheduler = scheduler.NewChanScheduler()
 
-	for _, url := range trider.seeds{
-		trider.scheduler.Push(&url)
+	for key, _ := range trider.seeds{
+		if trider.seeds[key].GetUrlString() != ""{
+			trider.scheduler.Push(trider.seeds[key])
+		}
+
 	}
 
 	for {
@@ -52,12 +92,16 @@ func (trider *Trider) Run(){
 		}
 
 		if trider.scheduler.LeftWork()==0{
-			time.Sleep( time.Duration(3 * time.Second))
+			time.Sleep( time.Duration(5 * time.Second))
 			continue
 		}
 
+
 		trider.mutex.P()
+
 		url, _ := trider.scheduler.Pop()
+
+
 		if url == nil{
 			time.Sleep( time.Duration(3 * time.Second))
 			trider.mutex.V()
@@ -66,17 +110,19 @@ func (trider *Trider) Run(){
 
 		go func(t *turl.Turl) {
 			defer trider.mutex.V()
-			fmt.Printf("begin deal url %s\n",url.GetUrlString())
+			trider.tlog.LogRun(t.GetUrlString())
 
 			if trider.downloaders[url.GetDownloaderNameString()] == nil {
-				fmt.Printf("no downloader named %s\n",url.GetDownloaderNameString())
-				fmt.Printf("cannot download url %s\n",url.GetUrlString())
+				str := fmt.Sprintf("no downloader named %s",url.GetDownloaderNameString())
+				trider.tlog.LogError(str)
+				trider.tlog.LogFail(url.GetUrlString())
 				return
 			}
 
 			if trider.processors[url.GetProcessorNameString()] == nil {
-				fmt.Printf("no processor named %s\n",url.GetProcessorNameString())
-				fmt.Printf("cannot download url %s\n",url.GetUrlString())
+				str := fmt.Sprintf("no processor named %s",url.GetProcessorNameString())
+				trider.tlog.LogError(str)
+				trider.tlog.LogFail(url.GetUrlString())
 				return
 			}
 
@@ -85,15 +131,30 @@ func (trider *Trider) Run(){
 
 			cnt ,err := downloader.Download(url)
 			if err != nil {
-				fmt.Printf("error in download")
-				fmt.Printf("cannot download url %s\n",url.GetUrlString())
+				trider.tlog.LogError("fail in download")
+				trider.tlog.LogError(err.Error())
+				trider.tlog.LogFail(url.GetUrlString())
+				return
 			}
 
-			errp := processor.DoProcess(cnt)
+			newTurls, errp := processor.DoProcess(cnt)
 			if errp != nil {
-				fmt.Printf("error in processor")
-				fmt.Printf("cannot download url %s totally\n",url.GetUrlString())
+				trider.tlog.LogError("fail in process")
+				trider.tlog.LogError(err.Error())
+				trider.tlog.LogFail(url.GetUrlString())
+				return
 			}
+
+			for key, _ := range newTurls{
+				trider.tlog.LogNewUrl(newTurls[key].GetUrlString())
+				trider.scheduler.Push(&newTurls[key])
+			}
+
+
+			trider.tlog.LogComplete(url.GetUrlString())
+
+
+
 		}(url)
 	}
 }

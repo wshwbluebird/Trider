@@ -10,7 +10,7 @@ type ChanScheduler struct {
 
 
 func NewChanScheduler() *ChanScheduler {
-	urlchan := make(chan *turl.Turl, 1024)
+	urlchan := make(chan *turl.Turl, 2048)
 	return &ChanScheduler{urlchan}
 }
 
