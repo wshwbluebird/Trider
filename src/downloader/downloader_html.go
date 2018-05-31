@@ -8,6 +8,7 @@ import (
 	"Trider/src/proxy"
 	"fmt"
 	"sync"
+	"errors"
 )
 
 
@@ -56,6 +57,9 @@ func (downloader *DownloaderHtml )Download(turl *turl.Turl) (*content.Content, e
 			fmt.Println("no ip left")
 		}
 		downloader.lock.Unlock()
+		if !b {
+			return nil, errors.New("all ips are forbidden")
+		}
 		return downloader.Download(turl)
 	}
 

@@ -49,8 +49,14 @@ func (t *ListProcessor) DoProcess(content *content.Content, oriUrl string) ([]tu
 		hotel_price_icon := ele.Find("li.hotel_price_icon")
 		hotel_price_ele := hotel_price_icon.Find("div.hotel_price")
 
+		//酒店的id
+		hotel_id, _ := ele.Attr("id")
+		fmt.Println(hotel_id)
+
 		//处理酒店名
 		name := hotel_item_name.Find("h2").Find("a").Text()
+		name_num := hotel_item_name.Find("h2").Find("a").Find("span").Text()
+		name = name[len(name_num):]
 		fmt.Println(name)
 
 		//处理几点定位

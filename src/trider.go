@@ -153,8 +153,7 @@ func (trider *Trider) Run(){
 
 			trider.tlog.LogComplete(url.GetUrlString())
 
-
-
+			time.Sleep( time.Duration(1 * time.Second))
 		}(url)
 	}
 }
