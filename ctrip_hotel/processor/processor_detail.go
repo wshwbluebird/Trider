@@ -5,7 +5,6 @@ import (
 	"Trider/src/turl"
 	"strings"
 	"github.com/PuerkitoBio/goquery"
-	"fmt"
 	"Trider/ctrip_hotel/data"
 	"Trider/ctrip_hotel/dbctrip"
 )
@@ -81,7 +80,7 @@ func (t *DetailProcessor) DoProcess(content *content.Content, oriUrl string) ([]
 	})
 
 	db := dbctrip.GetInstance()
-	fmt.Println(db.SaveHotelDetail(detail))
+	db.SaveHotelDetail(detail)
 
 	return newUrls,nil
 }

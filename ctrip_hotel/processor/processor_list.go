@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"Trider/ctrip_hotel/data"
+	"Trider/ctrip_hotel/dbctrip"
 )
 
 type ListProcessor struct {
@@ -39,6 +41,8 @@ func (t *ListProcessor) DoProcess(content *content.Content, oriUrl string) ([]tu
 
 	node, _ := content.GetDocument()
 	temp := node.Find("#hotel_list")
+
+	db := dbctrip.GetInstance()
 	temp.Find("div.hotel_new_list").Each(func(index int, ele *goquery.Selection){
 
 		// 提取元素
@@ -51,13 +55,11 @@ func (t *ListProcessor) DoProcess(content *content.Content, oriUrl string) ([]tu
 
 		//酒店的id
 		hotel_id, _ := ele.Attr("id")
-		fmt.Println(hotel_id)
 
 		//处理酒店名
 		name := hotel_item_name.Find("h2").Find("a").Text()
 		name_num := hotel_item_name.Find("h2").Find("a").Find("span").Text()
 		name = name[len(name_num):]
-		fmt.Println(name)
 
 		//处理几点定位
 		hotel_ico:=""
@@ -105,18 +107,13 @@ func (t *ListProcessor) DoProcess(content *content.Content, oriUrl string) ([]tu
 		//处理评价指标
 		hotel_level := hotelitem_judge_box.Find("a").Find("span.hotel_level").Text()
 		hotel_value := hotelitem_judge_box.Find("a").Find("span.hotel_value").Text()
-		total_judgement_score := hotelitem_judge_box.Find("a").
+		hotel_judgement_score := hotelitem_judge_box.Find("a").
 			Find("span.total_judgement_score").Find("span").Text()
 		hotel_judgement := hotelitem_judge_box.Find("a").
 			Find("span.hotel_judgement").Find("span").Text()
 
 		hotel_recommand := hotelitem_judge_box.Find("a").
 			Find("span.recommend").Text()
-		fmt.Println(hotel_level)
-		fmt.Println(hotel_value)
-		fmt.Println(total_judgement_score)
-		fmt.Println(hotel_judgement)
-		fmt.Println(hotel_recommand)
 
 		//处理价格及付款方式
 		hotel_low_price := hotel_price_ele.Find("a").Find("span.J_price_lowList").Text()
@@ -126,12 +123,30 @@ func (t *ListProcessor) DoProcess(content *content.Content, oriUrl string) ([]tu
 				gift_card_avaiable = "是"
 			}
 		})
-		fmt.Println(hotel_low_price)
-		fmt.Println(gift_card_avaiable)
 
 
-		fmt.Println()
+		basic := &data.HotelBasic{
+			Id:hotel_id,
+			Hotel_name : name,
+			Hotel_ico : hotel_ico,
+			Map_zone : map_zone,
+			Detail_address :detail_address,
+			Medal_list : medal_list,
+			Icon_list : icon_list,
+			Hotel_level : hotel_level,
+			Hotel_value : hotel_value,
+			Hotel_judgement_score : hotel_judgement_score,
+			Hotel_judgement : hotel_judgement,
+			Hotel_recommand : hotel_recommand,
+			Hotel_low_price : hotel_low_price,
+			Gift_card_avaiable : gift_card_avaiable,
+		}
 
+		db.SaveHotelBasic(basic)
+
+		detailUrl := fmt.Sprintf("http://hotels.ctrip.com/hotel/%s.html?isFull=F",hotel_id)
+		turltemp := turl.NewTurl(detailUrl,"detail","default")
+		newUrls = append(newUrls,*turltemp)
 	})
 
 	if number <= 204 {
