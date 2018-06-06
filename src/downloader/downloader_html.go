@@ -23,7 +23,7 @@ func NewDownloaderHtml() *DownloaderHtml {
 	client := &http.Client{}
 	pool := []string{"http://119.28.194.66:8888","http://113.240.226.164:8080","http://106.111.45.69:61234"}
 	pointer := 0
-	client.Transport = proxy.GetTransportByStr(pool[pointer])
+	//client.Transport = proxy.GetTransportByStr(pool[pointer])
 	pointer++
 	return &DownloaderHtml{
 		client:client,

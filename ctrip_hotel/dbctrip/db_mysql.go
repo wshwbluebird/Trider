@@ -48,7 +48,7 @@ func (server *Mysqlserver)SaveHotelBasic(basic *data.HotelBasic) bool{
 }
 
 
-	func (server *Mysqlserver) SaveHotelDetail(detail *data.HotelDetail) bool{
+func (server *Mysqlserver) SaveHotelDetail(detail *data.HotelDetail) bool{
 	_, err := server.db.Exec(
 		"INSERT INTO ctrip_hotel_detail " +
 			"(id, hotel_name, hotel_name_english, hotel_intro, " +
@@ -68,3 +68,95 @@ func (server *Mysqlserver)SaveHotelBasic(basic *data.HotelBasic) bool{
 
 	return true
 }
+
+
+func (server *Mysqlserver) SaveHotelCommentFirstPage(data []*data.HotelComment) bool{
+	base_sql := "INSERT INTO ctrip_hotel_comment " +
+		"(id, hotel_name, room_type, customer_name, " +
+		"comment_indate, comment_aim, comment_score_total, " +
+		"comment_score_place, comment_score_facilities, " +
+		"comment_score_service, comment_score_tidy, " +
+		"comment_word, " +
+		"picture_num) VALUES "
+
+	for _, d := range data{
+		sql_str := fmt.Sprintf("('%s','%s','%s','%s'" +
+			",'%s','%s','%s'" +
+			",'%s','%s'" +
+			",'%s','%s'" +
+			",'%s'" +
+			", %d),",
+			d.Hotel_id, d.Hotel_name, d.Comment_room, d.Customer_name,
+			d.Comment_indate, d.Comment_aim, d.Comment_score_total,
+			d.Comment_score_place, d.Comment_score_facilities,
+			d.Comment_score_service, d.Comment_score_tidy,
+			d.Comment_word, d.Picture_num)
+		base_sql = base_sql + sql_str
+	}
+	base_sql = base_sql[0:len(base_sql)-1]
+
+	_, err := server.db.Exec(
+		base_sql,
+	)
+	if err!=nil{
+		fmt.Println(err.Error())
+		return false
+	}
+	return true
+}
+
+
+func (server *Mysqlserver) IsSavedInBasec(id string) bool{
+	result, err := server.db.Query(
+		"SELECT hotel_name from ctrip_hotel_basic where id = ?  ",
+		id,
+	)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
+	}
+	return result.Next()
+}
+
+
+func (server *Mysqlserver) GetLostDetailUrl()  []string{
+	result, err := server.db.Query(
+		"SELECT  b.id FROM  ctrip_hotel_basic b WHERE b.id NOT IN (SELECT ctrip_hotel_detail.id  FROM ctrip_hotel_detail)",
+	)
+	ans := []string{}
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	for result.Next(){
+		var s string
+		result.Scan(&s)
+		temp := fmt.Sprintf("http://hotels.ctrip.com/hotel/%s.html?isFull=F",s)
+		ans = append(ans,temp)
+	}
+	return ans
+
+}
+
+func (server *Mysqlserver) GetLostCommentUrl()  []string{
+	result, err := server.db.Query(
+		"SELECT  b.id FROM  ctrip_hotel_basic b WHERE  b.id NOT IN (SELECT c.id  FROM ctrip_hotel_comment c)",
+	)
+	ans := []string{}
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	for result.Next(){
+		var s string
+		result.Scan(&s)
+		temp := fmt.Sprintf("http://hotels.ctrip.com/hotel/%s.html?isFull=F",s)
+		ans = append(ans,temp)
+	}
+	return ans
+
+}
+
+
+

@@ -72,3 +72,7 @@ func (tlog *Tlog) LogFail(str string) {
 func (tlog *Tlog) LogNewUrl(str string) {
 	tlog.log("NEW", str)
 }
+
+func (tlog *Tlog) LogFailureUrl(content string){
+	tlog.logger.Printf("%s\n",content)
+}

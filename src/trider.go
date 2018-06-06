@@ -19,6 +19,7 @@ type Trider struct {
 	processors map[string] processor.Processor
 	downloaders map[string] downloader.Downloader
 	tlog *tlog.Tlog
+	errlog *tlog.Tlog
 	seeds []*turl.Turl
 
 }
@@ -28,6 +29,7 @@ func NewTrider() *Trider {
 	downloadermap := make(map[string] downloader.Downloader)
 	downloadermap["default"] = downloader.NewDownloaderHtml()
 	logger := tlog.NewStdOut()
+	errlog := tlog.NewFileLog("log","errlog")
 	return &Trider{
 		threadNumber:0,
 		mutex:nil,
@@ -36,7 +38,7 @@ func NewTrider() *Trider {
 		downloaders:downloadermap,
 		seeds:nil,
 		tlog:logger,
-
+		errlog:errlog,
 	}
 
 }
@@ -134,14 +136,16 @@ func (trider *Trider) Run(){
 				trider.tlog.LogError("fail in download")
 				trider.tlog.LogError(err.Error())
 				trider.tlog.LogFail(url.GetUrlString())
+				trider.errlog.LogFailureUrl(url.GetUrlString())
 				return
 			}
 
 			newTurls, errp := processor.DoProcess(cnt,url.GetUrlString())
 			if errp != nil {
 				trider.tlog.LogError("fail in process")
-				trider.tlog.LogError(err.Error())
-				trider.tlog.LogFail(url.GetUrlString())
+				//trider.tlog.LogError(err.Error())
+				//trider.tlog.LogFail(url.GetUrlString())
+				trider.errlog.LogFailureUrl(url.GetUrlString())
 				return
 			}
 
