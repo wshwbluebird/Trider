@@ -106,6 +106,25 @@ func (server *Mysqlserver) SaveHotelCommentFirstPage(data []*data.HotelComment) 
 }
 
 
+
+
+
+func (server *Mysqlserver) SaveHotelLocation(data *data.HotelLocation) bool{
+	base_sql := "INSERT INTO ctrip_hotel_location (id, hotel_name, latitude, longitude) VALUES (?,?,?,?)"
+
+	_, err := server.db.Exec(
+		base_sql,
+		data.Hotel_id,data.Hotel_name,data.Lagtitude,data.Longtitude,
+	)
+	if err!=nil{
+		fmt.Println(err.Error())
+		return false
+	}
+	return true
+}
+
+
+
 func (server *Mysqlserver) IsSavedInBasec(id string) bool{
 	result, err := server.db.Query(
 		"SELECT hotel_name from ctrip_hotel_basic where id = ?  ",
@@ -155,8 +174,28 @@ func (server *Mysqlserver) GetLostCommentUrl()  []string{
 		ans = append(ans,temp)
 	}
 	return ans
-
 }
+
+
+func (server *Mysqlserver) GetLostLocationUrl()  []string{
+	result, err := server.db.Query(
+		"SELECT  b.id FROM  ctrip_hotel_basic b WHERE  b.id NOT IN (SELECT c.id  FROM ctrip_hotel_location c)",
+	)
+	ans := []string{}
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	for result.Next(){
+		var s string
+		result.Scan(&s)
+		temp := fmt.Sprintf("http://hotels.ctrip.com/hotel/%s.html?isFull=F",s)
+		ans = append(ans,temp)
+	}
+	return ans
+}
+
+
 
 
 
