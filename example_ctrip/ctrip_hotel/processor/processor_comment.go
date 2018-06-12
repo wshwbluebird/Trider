@@ -1,13 +1,13 @@
 package processor
 
 import (
-	"Trider/src/content"
-	"Trider/src/turl"
-	"Trider/ctrip_hotel/data"
+	"Trider/content"
+	"Trider/turl"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
-	db2 "Trider/ctrip_hotel/dbctrip"
+	db2 "Trider/example_ctrip/ctrip_hotel/dbctrip"
 	"github.com/headzoo/surf/errors"
+	"Trider/example_ctrip/ctrip_hotel/data"
 )
 
 type CommentProcessor struct {

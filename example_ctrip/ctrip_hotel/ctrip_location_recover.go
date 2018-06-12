@@ -1,11 +1,11 @@
 package main
 
 import (
-	"Trider/ctrip_hotel/dbctrip"
 	"fmt"
-	"Trider/src/turl"
-	"Trider/src"
-	"Trider/ctrip_hotel/processor"
+	"Trider/turl"
+	"Trider"
+	"Trider/example_ctrip/ctrip_hotel/dbctrip"
+	"Trider/example_ctrip/ctrip_hotel/processor"
 )
 
 func main() {

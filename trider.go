@@ -2,14 +2,14 @@ package src
 
 import (
 
-	"Trider/src/chanmutex"
-	"Trider/src/scheduler"
-	"Trider/src/turl"
-	"Trider/src/processor"
-	"Trider/src/downloader"
+	"Trider/chanmutex"
+	"Trider/scheduler"
+	"Trider/turl"
+	"Trider/processor"
+	"Trider/downloader"
 	"fmt"
 	"time"
-	"Trider/src/tlog"
+	"Trider/tlog"
 )
 
 type Trider struct {

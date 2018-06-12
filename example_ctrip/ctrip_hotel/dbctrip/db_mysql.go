@@ -2,9 +2,9 @@ package dbctrip
 
 import (
 	"database/sql"
-	"Trider/ctrip_hotel/data"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"Trider/example_ctrip/ctrip_hotel/data"
 )
 
 type Mysqlserver struct {

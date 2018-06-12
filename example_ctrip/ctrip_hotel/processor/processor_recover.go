@@ -1,15 +1,15 @@
 package processor
 
 import (
-	"Trider/src/content"
-	"Trider/src/turl"
+	"Trider/content"
+	"Trider/turl"
 
 	"strings"
 	"strconv"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"Trider/ctrip_hotel/data"
-	"Trider/ctrip_hotel/dbctrip"
+	"Trider/example_ctrip/ctrip_hotel/data"
+	"Trider/example_ctrip/ctrip_hotel/dbctrip"
 )
 
 type RecoverProcessor struct {

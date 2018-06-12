@@ -1,8 +1,8 @@
 package processor
 
 import (
-	"Trider/src/turl"
-	"Trider/src/content"
+	"Trider/turl"
+	"Trider/content"
 )
 
 type Processor interface {

@@ -2,7 +2,7 @@ package downloader
 
 import (
 	"testing"
-	"Trider/src/turl"
+	"Trider/turl"
 	"fmt"
 )
 

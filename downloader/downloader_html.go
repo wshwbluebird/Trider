@@ -2,10 +2,10 @@ package downloader
 
 import (
 	"net/http"
-	"Trider/src/turl"
-	"Trider/src/content"
+	"Trider/turl"
+	"Trider/content"
 	"io/ioutil"
-	"Trider/src/proxy"
+	"Trider/proxy"
 	"fmt"
 	"sync"
 	"errors"
