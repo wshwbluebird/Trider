@@ -12,7 +12,7 @@ type Mysqlserver struct {
 }
 
 func NewMysqlserver() (*Mysqlserver, error){
-	db, err := sql.Open("mysql", "shuaiwei:123456@tcp(rm-bp172z8x1m3m16m0pto.mysql.rds.aliyuncs.com:3306)/ctrip?charset=utf8")
+	db, err := sql.Open("mysql", "username:password@tcpurl:port)/database?charset=utf8")
 	if err != nil{
 		fmt.Println(err.Error())
 		return nil,err

@@ -4,7 +4,7 @@
 
 ## 安装
 ```
-  go get -u github.com/go-sql-driver/mysql  //安装数据库，如果运行示例，可以不安装
+  go get -u github.com/go-sql-driver/mysql  //安装数据库，如果不运行示例，可以不安装
   go get github.com/PuerkitoBio/goquery     //该项目基于goquery
   go get github.com/wshwbluebird/Trider     //下载本项目
 ```
