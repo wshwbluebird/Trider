@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-	"Trider/turl"
+	"github.com/wshwbluebird/Trider/turl"
 )
 
 type ChanScheduler struct {

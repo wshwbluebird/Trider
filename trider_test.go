@@ -2,9 +2,10 @@ package src
 
 import (
 	"testing"
-	"Trider/turl"
-	"Trider/downloader"
-	"Trider/processor"
+
+	"github.com/wshwbluebird/Trider/turl"
+	"github.com/wshwbluebird/Trider/downloader"
+	"github.com/wshwbluebird/Trider/processor"
 )
 
 func TestTrider_Run1(t *testing.T) {

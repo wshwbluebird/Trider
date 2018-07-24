@@ -2,8 +2,8 @@ package downloader
 
 import (
 	"testing"
-	"Trider/turl"
 	"fmt"
+	"github.com/wshwbluebird/Trider/turl"
 )
 
 func runTest(downloader Downloader, turl *turl.Turl) (b bool){

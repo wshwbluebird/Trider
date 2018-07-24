@@ -5,10 +5,11 @@ import (
 	"bufio"
 	"io"
 	"fmt"
-	"Trider/turl"
-	"Trider"
+
 	"strings"
-	"Trider/example_ctrip/ctrip_hotel/processor"
+	"github.com/wshwbluebird/Trider/turl"
+	"github.com/wshwbluebird/Trider"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/processor"
 )
 
 func main() {

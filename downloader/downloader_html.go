@@ -2,13 +2,14 @@ package downloader
 
 import (
 	"net/http"
-	"Trider/turl"
-	"Trider/content"
-	"io/ioutil"
-	"Trider/proxy"
+
 	"fmt"
 	"sync"
 	"errors"
+	"github.com/wshwbluebird/Trider/turl"
+	"github.com/wshwbluebird/Trider/content"
+	"io/ioutil"
+	"github.com/wshwbluebird/Trider/proxy"
 )
 
 

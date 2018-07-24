@@ -2,15 +2,14 @@ package processor
 
 import (
 	"sync/atomic"
-	"Trider/content"
-	"Trider/turl"
-
+	"github.com/wshwbluebird/Trider/content"
+	"github.com/wshwbluebird/Trider/turl"
 	"strings"
 	"strconv"
-	"fmt"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/dbctrip"
 	"github.com/PuerkitoBio/goquery"
-	"Trider/example_ctrip/ctrip_hotel/data"
-	"Trider/example_ctrip/ctrip_hotel/dbctrip"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/data"
+	"fmt"
 )
 
 type ListProcessor struct {

@@ -1,12 +1,12 @@
 package processor
 
 import (
-	"Trider/content"
-	"Trider/turl"
+	"github.com/wshwbluebird/Trider/turl"
 	"strings"
 	"github.com/PuerkitoBio/goquery"
-	"Trider/example_ctrip/ctrip_hotel/data"
-	"Trider/example_ctrip/ctrip_hotel/dbctrip"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/data"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/dbctrip"
+	"github.com/wshwbluebird/Trider/content"
 )
 
 

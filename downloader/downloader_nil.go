@@ -1,8 +1,8 @@
 package downloader
 
 import (
-	"Trider/turl"
-	"Trider/content"
+	"github.com/wshwbluebird/Trider/turl"
+	"github.com/wshwbluebird/Trider/content"
 )
 
 type DownloaderNil struct {

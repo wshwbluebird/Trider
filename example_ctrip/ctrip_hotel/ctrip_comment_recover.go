@@ -1,11 +1,11 @@
 package main
 
 import (
-	"Trider/turl"
+	"github.com/wshwbluebird/Trider/turl"
 	"fmt"
-	"Trider"
-	"Trider/example_ctrip/ctrip_hotel/processor"
-	"Trider/example_ctrip/ctrip_hotel/dbctrip"
+	"github.com/wshwbluebird/Trider"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/processor"
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/dbctrip"
 )
 
 func main() {

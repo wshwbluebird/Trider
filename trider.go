@@ -1,15 +1,14 @@
 package src
 
 import (
-
-	"Trider/chanmutex"
-	"Trider/scheduler"
-	"Trider/turl"
-	"Trider/processor"
-	"Trider/downloader"
-	"fmt"
+	"github.com/wshwbluebird/Trider/scheduler"
+	"github.com/wshwbluebird/Trider/processor"
+	"github.com/wshwbluebird/Trider/downloader"
+	"github.com/wshwbluebird/Trider/tlog"
+	"github.com/wshwbluebird/Trider/chanmutex"
 	"time"
-	"Trider/tlog"
+	"fmt"
+	"github.com/wshwbluebird/Trider/turl"
 )
 
 type Trider struct {
@@ -113,6 +112,7 @@ func (trider *Trider) Run(){
 		go func(t *turl.Turl) {
 			defer trider.mutex.V()
 			trider.tlog.LogRun(t.GetUrlString())
+
 
 			if trider.downloaders[url.GetDownloaderNameString()] == nil {
 				str := fmt.Sprintf("no processor named %s",url.GetDownloaderNameString())

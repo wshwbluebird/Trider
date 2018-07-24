@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"Trider/example_ctrip/ctrip_hotel/data"
+
+	"github.com/wshwbluebird/Trider/example_ctrip/ctrip_hotel/data"
 )
 
 type Mysqlserver struct {

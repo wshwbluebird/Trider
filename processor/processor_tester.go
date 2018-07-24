@@ -1,11 +1,11 @@
 package processor
 
 import (
-	"Trider/turl"
+	"github.com/wshwbluebird/Trider/turl"
 	"math/rand"
 	"fmt"
 	"time"
-	"Trider/content"
+	"github.com/wshwbluebird/Trider/content"
 )
 
 type TestProcessor struct {
